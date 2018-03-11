@@ -1,0 +1,4 @@
+@echo off
+if exist e:\sysop\kopia rmdir /S /Q e:\sysop\kopia
+mkdir e:\sysop\kopia
+xcopy e:\sysop\download e:\sysop\kopia

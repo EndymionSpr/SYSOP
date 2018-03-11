@@ -1,0 +1,8 @@
+@echo off
+if "%1" == "" (goto :brak_parametru) else (goto :rob)
+:brak_parametru
+echo Brak parametru!
+goto :koniec
+:rob
+for /f %%f in (%1) do (if not exist %%f (mkdir %%f) else (rmdir /S /Q %%f))
+:koniec
