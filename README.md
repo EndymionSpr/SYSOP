@@ -1,0 +1,2 @@
+# SYSOP
+Operowane systemsy
