@@ -1,0 +1,72 @@
+function download(){
+if find /home/xubuntu/repository -mindepth 1 | read;
+then
+read -p "Czy usunac zawartosc oraz folder repository? [t/n]: " choice
+else
+echo "Przerywam prace funkcji"
+sleep $delay_time
+return
+fi
+if [ "$choice" = 't' ];
+then
+#rm -rf repository
+echo "Czyszcze folder repository"
+sleep $delay_time
+else
+echo "Przerywam prace funkcji"
+sleep $delay_time
+return
+fi
+#wget -no-chech-certificate https://corecontrol.cba.pl/linuxlab.tar nie wiem jak to wykonac, probowalem tez z curl
+echo "Pobieram repozytorium"
+sleep $delay_time
+tar -xvf repository.tar /repository/linuxlab/download
+if [ ! -f /home/xubuntu/repository/linuxlab/katalogi.txt ];
+then
+echo "Nie istnieje plik katalogi.txt"
+sleep $delay_time
+return
+fi
+if find /home/xubuntu/repository/content -mindepth 1 | read;
+then
+read -p "Czy usunac zawartosc oraz podkatalog /repository/content? [t/n]" choice1
+fi
+if [ "$choice1" = 't' ];
+then
+rm -rf /home/xubuntu/repository/content
+echo "Czyszcze folder content"
+sleep $delay_time
+sudo mkdir -p /home/xubuntu/repository/content
+echo "Tworze folder content"
+sleep $delay_time
+cd /home/xubuntu/repository/content
+echo "Tworze foldery na podstawie katalogi.txt"
+sleep $delay_time
+cat home/xubuntu/repository/linuxlab/katalogi.txt | xargs -L 1 mkdir
+echo "Przenosze pliki z download do odpowiednich folderow"
+for i in /home/xubuntu/repository/download/*;
+do
+cd /home/xubuntu/repository/content
+mv $i /home/xubuntu/repository/content/$i/; done
+#for f in /home/xubuntu/repository/download/*.*; do
+#mv /home/xubuntu/repository/download/$f /home/xubuntu/repository/content/*
+sleep $delay_time
+fi
+sudo mkdir -p /home/xubuntu/repository/content
+echo "Tworze folder content"
+sleep $delay_time
+echo "Tworze foldery na podstawie katalogi.txt"
+sleep $delay_time
+cd /home/xubuntu/repository/content
+cat home/xubuntu/repository/linuxlab/katalogi.txt | xargs -L 1 mkdir
+echo "Przenosze pliki z download do odpowiednich folderow"
+sleep $delay_time
+cd /home/xubuntu/repository/download
+for file in *; do
+if [[ -f "$file" ]];
+then
+mv "$file" "${file%.*}"
+fi
+done
+return
+}
